@@ -1,0 +1,349 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #121217;
+    color: #E0E0E0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-top: 80px; /* Global padding for fixed navbar - adjust if navbar height changes */
+}
+
+/* Navbar Styles */
+.navbar-custom {
+    background-color: #1A1A21;
+    border-bottom: 1px solid #2a2a33;
+}
+
+.navbar-custom .navbar-brand,
+.navbar-brand-landing {
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 1.75rem;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+}
+.navbar-brand-landing:hover {
+    color: #A78BFA;
+}
+
+.navbar-custom .navbar-brand .logo-icon,
+.navbar-brand-landing .logo-icon,
+.navbar-brand-landing .bi-stars {
+    color: #A78BFA;
+    margin-right: 0.25rem;
+}
+
+.navbar-custom .nav-link {
+    color: #A0AEC0;
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
+    font-weight: 500;
+}
+
+.navbar-custom .nav-link:hover,
+.navbar-custom .nav-link.active {
+    color: #FFFFFF;
+}
+
+.navbar-custom .navbar-toggler,
+.navbar-custom .mobile-menu-toggle { /* Ensure toggler styles are consistent */
+    border-color: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.85); /* Icon color for Bootstrap toggler */
+}
+.navbar-custom .navbar-toggler-icon { /* For default Bootstrap toggler */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.85%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+.navbar-custom .mobile-menu-toggle i { /* For your custom bi-list toggler */
+    font-size: 1.5rem; /* Adjust as needed */
+}
+
+
+/* Navbar Auth Elements (Copied from index.html styles) */
+.navbar-custom .nav-actions {
+    gap: 0.75rem;
+}
+
+.btn-primary-gradient {
+    background-image: linear-gradient(to right, #A78BFA 0%, #D946EF 50%, #A78BFA 100%);
+    background-size: 200% auto;
+    color: white;
+    border: none;
+    transition: background-position 0.5s ease;
+    font-weight: 500;
+    padding: 0.5rem 1rem; /* Default for .btn-nav-cta */
+    font-size: 0.9rem;   /* Default for .btn-nav-cta */
+}
+.btn-primary-gradient:hover {
+    background-position: right center;
+    color: white;
+}
+.btn-primary-gradient.btn-lg { /* For modal buttons */
+    padding: 0.65rem 1.25rem;
+    font-size: 1rem;
+}
+
+
+.btn-secondary-outline {
+    border: 1px solid #4A5568;
+    color: #E0E0E0;
+    background-color: transparent;
+    font-weight: 500;
+}
+.btn-secondary-outline:hover {
+    background-color: #4A5568;
+    color: #FFFFFF;
+}
+.btn-secondary-outline.btn-sm { /* For navbar logout */
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+}
+
+.navbar-custom .user-avatar {
+    background-color: #3B82F6;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+}
+.navbar-custom .user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+
+/* Policy Page Content Styles */
+.policy-container {
+    padding-top: 2rem;
+    padding-bottom: 5rem; /* Increased padding to ensure footer doesn't overlap */
+}
+.policy-container h1 {
+    color: #FFFFFF;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    font-size: 2.25rem;
+    font-family: 'Poppins', sans-serif; /* Consistent heading font */
+}
+.policy-container h2 {
+    color: #E0E0E0;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    font-size: 1.5rem;
+    font-family: 'Poppins', sans-serif; /* Consistent heading font */
+}
+.policy-container p,
+.policy-container ul li {
+    color: #B0B0C0;
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+.policy-container ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+.policy-container ul li {
+    margin-bottom: 0.5rem;
+}
+.policy-container strong {
+    color: #E0E0E0;
+}
+.policy-container hr {
+    border-color: #4A5568;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.policy-container a.footer-link-bottom { /* Specifically for links within policy content if needed */
+    color: #8AB4F8;
+    text-decoration: none;
+}
+.policy-container a.footer-link-bottom:hover {
+    color: #A8C7FA;
+    text-decoration: underline;
+}
+
+/* Footer Styles */
+.landing-footer.footer-custom {
+    background-color: #1A1A21;
+    color: #A0AEC0;
+    padding-top: 3.5rem; /* Increased top padding */
+    padding-bottom: 2rem; /* Increased bottom padding */
+    margin-top: auto;
+    border-top: 1px solid #2a2a33;
+    font-size: 0.9rem;
+}
+
+/* Bootstrap row already handles flex, .footer-content is for semantic grouping if needed */
+.footer-content {
+    /* gy-4 and gx-lg-5 are on the .row element in HTML */
+    margin-bottom: 2.5rem; /* Space before footer-bottom */
+}
+
+.footer-column .navbar-brand-landing {
+    font-size: 1.5rem;
+    margin-bottom: 1rem !important; /* Increased margin */
+    font-family: 'Poppins', sans-serif;
+    display: inline-block;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+.footer-column .navbar-brand-landing:hover {
+    color: #A78BFA;
+}
+.footer-column .navbar-brand-landing i.bi-stars { /* Target specifically */
+    font-size: 1.4rem;
+    color: #A78BFA;
+    margin-right: 0.35rem; /* Slightly more margin */
+}
+
+.footer-column p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    color: #B0B0C0; /* Slightly lighter paragraph text in footer */
+}
+
+.footer-column h4 {
+    color: #FFFFFF;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem; /* Increased margin */
+    font-family: 'Poppins', sans-serif;
+}
+
+.footer-column ul.list-unstyled {
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.footer-column ul.list-unstyled li {
+    margin-bottom: 0.75rem; /* Increased spacing between links */
+}
+
+.footer-column ul.list-unstyled li a.footer-link-bottom,
+.footer-column ul.list-unstyled li .conceptual-link.footer-link-bottom { /* Ensure conceptual links also styled */
+    color: #A0AEC0;
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+}
+.footer-column ul.list-unstyled li a.footer-link-bottom:hover,
+.footer-column ul.list-unstyled li .conceptual-link.footer-link-bottom:hover {
+    color: #FFFFFF;
+}
+.footer-column ul.list-unstyled li a.footer-link-bottom i.bi-chevron-right,
+.footer-column ul.list-unstyled li .conceptual-link.footer-link-bottom i.bi-chevron-right {
+    margin-right: 0.5rem;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.footer-social {
+    display: flex;
+    gap: 1.25rem; /* Increased gap */
+    margin-top: 0.5rem;
+}
+
+.social-icon {
+    color: #A0AEC0;
+    font-size: 1.6rem; /* Slightly larger social icons */
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+.social-icon:hover {
+    color: #FFFFFF;
+    transform: translateY(-2px); /* Add a subtle hover effect */
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem; /* Increased padding */
+    border-top: 1px solid #3a3a43; /* Slightly more visible border */
+    font-size: 0.8rem;
+    color: #808A9A;
+}
+.footer-bottom p {
+    margin-bottom: 0.6rem; /* Consistent small margin */
+}
+.footer-bottom a.footer-link-bottom {
+    color: #A0AEC0;
+    font-weight: 500;
+}
+.footer-bottom a.footer-link-bottom:hover {
+    color: #FFFFFF;
+    text-decoration: underline;
+}
+
+/* Modal Styles (if not fully covered by Bootstrap defaults) */
+.modal-content {
+    background-color: #1A1A21; /* Dark background for modal */
+    color: #E0E0E0;
+    border: 1px solid #2a2a33;
+    border-radius: 0.5rem; /* Slightly more rounded */
+}
+.modal-header {
+    border-bottom: 1px solid #2a2a33;
+}
+.modal-header .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%); /* Make close button white */
+}
+.modal-title {
+    color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+}
+.modal-body .nav-pills .nav-link {
+    color: #A0AEC0;
+    border: 1px solid transparent; /* Prepare for active state border */
+}
+.modal-body .nav-pills .nav-link.active {
+    background-color: #A78BFA; /* Or your primary gradient color */
+    color: #FFFFFF;
+    border-color: #A78BFA;
+}
+.modal-body .form-control {
+    background-color: #2D3748;
+    border: 1px solid #4A5568;
+    color: #FFFFFF;
+}
+.modal-body .form-control::placeholder {
+    color: #A0AEC0;
+}
+.modal-body .form-control:focus {
+    background-color: #2D3748;
+    color: #FFFFFF;
+    border-color: #A78BFA;
+    box-shadow: 0 0 0 0.25rem rgba(167, 139, 250, 0.25);
+}
+.modal-body .form-label {
+    color: #E0E0E0;
+}
+.modal-body .form-text {
+    color: #A0AEC0;
+}
+.modal-body .btn-light.border { /* Google button */
+    background-color: #FFFFFF;
+    color: #333333;
+    border-color: #CCCCCC;
+}
+.modal-body .btn-light.border:hover {
+    background-color: #f0f0f0;
+}
+.modal-body .btn-success { /* Sign Up button */
+    background-color: #4CAF50; /* Example success color */
+    border-color: #4CAF50;
+}
+.modal-body .btn-success:hover {
+    background-color: #45a049;
+    border-color: #45a049;
+}
