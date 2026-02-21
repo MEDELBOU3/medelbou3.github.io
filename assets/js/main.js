@@ -103,10 +103,15 @@ function initNewsletterForms() {
             if (!emailInput?.value.trim()) return;
 
             // Simulate async submission
-            btn.textContent = 'Subscribing…';
-            btn.disabled = true;
+            setTimeout(async () => {
+                // Track Analytics Event
+                try {
+                    const { analytics, logEvent } = await import('./auth.js');
+                    logEvent(analytics, 'newsletter_signup', {
+                        form_location: form.closest('aside') ? 'sidebar' : 'footer'
+                    });
+                } catch (err) { console.error('Analytics error:', err); }
 
-            setTimeout(() => {
                 btn.textContent = '✓ Subscribed!';
                 btn.style.background = '#D1FAE5';
                 btn.style.color = '#065F46';
@@ -150,7 +155,16 @@ function initShareBar() {
 
     copyBtn.addEventListener('click', async () => {
         try {
-            await navigator.clipboard.writeText(window.location.href);
+            setTimeout(async () => {
+                try {
+                    const { analytics, logEvent } = await import('./auth.js');
+                    logEvent(analytics, 'share', {
+                        method: 'clipboard',
+                        content_type: 'article',
+                        item_id: window.location.search
+                    });
+                } catch (err) { }
+            }, 0);
             copyBtn.textContent = '✓';
             copyBtn.title = 'Copied!';
             setTimeout(() => {
@@ -309,6 +323,17 @@ function filterByCategory(cat) {
     $$('.cat-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.cat === cat);
     });
+
+    // Track Analytics Category Click
+    try {
+        import('./auth.js').then(({ analytics, logEvent }) => {
+            logEvent(analytics, 'select_content', {
+                content_type: 'category',
+                item_id: cat
+            });
+        });
+    } catch (err) { }
+
     renderPostsGrid();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -327,6 +352,16 @@ function filterByTag(tag) {
     // Update category UI to 'all' if tag filter is active
     SearchState.category = 'all';
     $$('.cat-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.cat === 'all'));
+
+    // Track Analytics Tag Click
+    try {
+        import('./auth.js').then(({ analytics, logEvent }) => {
+            logEvent(analytics, 'select_content', {
+                content_type: 'tag',
+                item_id: tag
+            });
+        });
+    } catch (err) { }
 
     renderPostsGrid();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -384,6 +419,16 @@ async function renderSinglePost() {
         window.location.href = '404.html';
         return;
     }
+
+    // Track analytics view_item
+    try {
+        const { analytics, logEvent } = await import('./auth.js');
+        logEvent(analytics, 'view_item', {
+            item_id: post.id,
+            item_name: post.title,
+            item_category: post.category
+        });
+    } catch (err) { console.error('Analytics error:', err); }
 
     // Update <title> and meta
     document.title = `${post.title} | The Pulse Blog`;
@@ -539,4 +584,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (page === 'post.html') {
         await renderSinglePost();
     }
+
+    // Universal Page View Tracking
+    try {
+        import('./auth.js').then(({ analytics, logEvent }) => {
+            logEvent(analytics, 'page_view', {
+                page_path: window.location.pathname,
+                page_title: document.title
+            });
+        });
+    } catch (err) { }
 });

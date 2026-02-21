@@ -17,13 +17,15 @@ const firebaseConfig = {
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp, deleteDoc, updateDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const analytics = getAnalytics(app);
 
-export { auth, db, collection, addDoc, getDocs, query, orderBy, serverTimestamp, deleteDoc, updateDoc, doc, getDoc };
+export { auth, db, analytics, logEvent, collection, addDoc, getDocs, query, orderBy, serverTimestamp, deleteDoc, updateDoc, doc, getDoc };
 
 // ─── DOM Elements ─────────────────────────────────────────── 
 const authBtn = document.getElementById('auth-btn');
@@ -133,12 +135,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (isLoginMode) {
                 await signInWithEmailAndPassword(auth, email, password);
+                logEvent(analytics, 'login', { method: 'email' });
             } else {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 await updateProfile(userCredential.user, {
                     displayName: name,
                     photoURL: `https://i.pravatar.cc/150?u=${userCredential.user.uid}`
                 });
+                logEvent(analytics, 'sign_up', { method: 'email' });
                 // Force UI update
                 updateAuthUI(userCredential.user);
             }

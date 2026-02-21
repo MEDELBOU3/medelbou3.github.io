@@ -191,6 +191,14 @@ function initIndexFilters() {
                     SearchState.query = q;
                     SearchState.tag = ''; // Clear tag when searching
                     SearchState.currentPage = 1;
+
+                    // Track Analytics Search
+                    try {
+                        import('./auth.js').then(({ analytics, logEvent }) => {
+                            logEvent(analytics, 'search', { search_term: q });
+                        });
+                    } catch (err) { }
+
                     if (typeof renderPostsGrid === 'function') renderPostsGrid();
                     headerInput.blur();
                 } else {
