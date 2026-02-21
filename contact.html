@@ -63,22 +63,31 @@
         </div>
     </footer>
 
+    <!-- Auth Modal -->
     <div class="auth-modal" id="auth-modal">
         <div class="auth-card">
             <button class="auth-close" id="auth-close"><i data-lucide="x"></i></button>
             <div class="auth-header">
                 <div class="auth-logo"><i data-lucide="newspaper"></i></div>
-                <h2 id="auth-title">Sign In</h2>
+                <h2 id="auth-title">Sign In to Your Account</h2>
             </div>
             <form class="auth-form" id="auth-form">
-                <input type="email" id="auth-email" placeholder="Email" required
-                    style="padding:12px; border:1px solid var(--color-border); border-radius:8px; margin-bottom:12px;">
-                <input type="password" id="auth-password" placeholder="Password" required
-                    style="padding:12px; border:1px solid var(--color-border); border-radius:8px; margin-bottom:12px;">
+                <div class="form-group" id="auth-name-field" style="display: none;">
+                    <label for="auth-name">Full Name</label>
+                    <input type="text" id="auth-name" placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="auth-email">Email Address</label>
+                    <input type="email" id="auth-email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="auth-password">Password</label>
+                    <input type="password" id="auth-password" placeholder="••••••••" required>
+                </div>
                 <button type="submit" class="auth-btn-full" id="auth-submit-btn">Sign In</button>
             </form>
             <div class="auth-footer">
-                <button id="auth-toggle-btn">No account? Sign Up</button>
+                <button id="auth-toggle-btn">Don't have an account? <span>Sign Up</span></button>
             </div>
         </div>
     </div>

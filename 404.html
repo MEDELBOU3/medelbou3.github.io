@@ -45,6 +45,35 @@
         </div>
     </footer>
 
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="auth-modal">
+        <div class="auth-card">
+            <button class="auth-close" id="auth-close"><i data-lucide="x"></i></button>
+            <div class="auth-header">
+                <div class="auth-logo"><i data-lucide="newspaper"></i></div>
+                <h2 id="auth-title">Sign In to Your Account</h2>
+            </div>
+            <form class="auth-form" id="auth-form">
+                <div class="form-group" id="auth-name-field" style="display: none;">
+                    <label for="auth-name">Full Name</label>
+                    <input type="text" id="auth-name" placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="auth-email">Email Address</label>
+                    <input type="email" id="auth-email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="auth-password">Password</label>
+                    <input type="password" id="auth-password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="auth-btn-full" id="auth-submit-btn">Sign In</button>
+            </form>
+            <div class="auth-footer">
+                <button id="auth-toggle-btn">Don't have an account? <span>Sign Up</span></button>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="assets/js/auth.js"></script>
     <script>lucide.createIcons();</script>
 </body>
