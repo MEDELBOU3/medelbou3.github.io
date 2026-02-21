@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | The Pulse Blog</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i data-lucide="newspaper"></i></div>
+                <span class="logo-text">The <span>Pulse</span></span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html?cat=Tech">Tech</a>
+                <a href="index.html?cat=Movies">Movies</a>
+                <a href="index.html?cat=Reviews">Reviews</a>
+                <a href="index.html?cat=News">News</a>
+            </nav>
+            <div id="user-section"></div>
+            <button class="btn btn-primary" id="auth-btn"><i data-lucide="user"></i> Sign In</button>
+        </div>
+    </header>
+
+    <main class="container" style="padding: 80px 0; max-width: 800px;">
+        <h1 style="font-size: 3rem; margin-bottom: 2rem;">About The Pulse</h1>
+        <p style="font-size: 1.25rem; line-height: 1.8; color: var(--color-text-muted); margin-bottom: 2rem;">
+            The Pulse is a modern digital publication dedicated to exploring the intersection of technology, culture,
+            and information. We believe that in a world of constant noise, deep-dive insights and well-researched
+            stories are more important than ever.
+        </p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 60px;">
+            <div>
+                <h3 style="margin-bottom: 1rem;"><i data-lucide="target" style="color:var(--color-primary)"></i> Our
+                    Mission</h3>
+                <p>To provide our readers with high-quality, long-form content that informs, inspires, and challenges
+                    the status quo.</p>
+            </div>
+            <div>
+                <h3 style="margin-bottom: 1rem;"><i data-lucide="users" style="color:var(--color-primary)"></i> Our
+                    Community</h3>
+                <p>We're more than just a blog; we're a community of curious minds exploring the future together.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-bottom">
+            <span>© 2026 The Pulse Blog. All rights reserved.</span>
+        </div>
+    </footer>
+
+    <div class="auth-modal" id="auth-modal">
+        <div class="auth-card">
+            <button class="auth-close" id="auth-close"><i data-lucide="x"></i></button>
+            <div class="auth-header">
+                <div class="auth-logo"><i data-lucide="newspaper"></i></div>
+                <h2 id="auth-title">Sign In</h2>
+            </div>
+            <form class="auth-form" id="auth-form">
+                <input type="email" id="auth-email" placeholder="Email" required
+                    style="padding:12px; border:1px solid var(--color-border); border-radius:8px; margin-bottom:12px;">
+                <input type="password" id="auth-password" placeholder="Password" required
+                    style="padding:12px; border:1px solid var(--color-border); border-radius:8px; margin-bottom:12px;">
+                <button type="submit" class="auth-btn-full" id="auth-submit-btn">Sign In</button>
+            </form>
+            <div class="auth-footer">
+                <button id="auth-toggle-btn">No account? Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/auth.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Post | The Pulse Blog</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- TinyMCE Open Source -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .create-post-wrap {
+            padding: 80px 0;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .form-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .editor-label {
+            display: block;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--color-heading);
+            font-size: 1.1rem;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--color-border);
+            background: var(--color-bg-soft);
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            transition: 200ms;
+        }
+
+        .input-group input:focus {
+            border-color: var(--color-primary);
+            background: #fff;
+        }
+
+        .submit-area {
+            display: flex;
+            justify-content: flex-end;
+            gap: 16px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i data-lucide="newspaper"></i></div>
+                <span class="logo-text">The <span>Pulse</span></span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+            </nav>
+            <div id="user-section"></div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="create-post-wrap">
+            <h1 class="post-main-title" id="page-title">Create New Article</h1>
+            <div class="form-card">
+                <form id="post-form">
+                    <div class="input-group">
+                        <label class="editor-label">Post Title</label>
+                        <input type="text" id="post-title" placeholder="Enter a catchy title..." required>
+                    </div>
+
+                    <div class="input-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <label class="editor-label">Category</label>
+                            <select id="post-category" required>
+                                <option value="Tech">Technology</option>
+                                <option value="Movies">Movies</option>
+                                <option value="Reviews">Reviews</option>
+                                <option value="News">News</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="editor-label">Cover Image URL</label>
+                            <input type="url" id="post-image" placeholder="https://source.unsplash.com/..." required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="editor-label">Short Excerpt</label>
+                        <input type="text" id="post-excerpt" placeholder="A brief summary for the card view..."
+                            required>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="editor-label">Content</label>
+                        <textarea id="post-editor"></textarea>
+                    </div>
+
+                    <div class="submit-area">
+                        <a href="index.html" class="btn"
+                            style="background: var(--color-bg-gray); color: var(--color-text);">Cancel</a>
+                        <button type="submit" class="btn btn-primary" id="publish-btn">Publish Article <i
+                                data-lucide="send"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-bottom">
+            <span>© 2026 The Pulse Blog. All rights reserved.</span>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { auth, db, collection, addDoc, serverTimestamp, doc, getDoc, updateDoc } from './assets/js/auth.js';
+
+        // Initialize Lucide
+        lucide.createIcons();
+
+        // Check for edit mode
+        const urlParams = new URLSearchParams(window.location.search);
+        const editId = urlParams.get('edit');
+        const isEditMode = !!editId;
+
+        // Initialize TinyMCE
+        tinymce.init({
+            selector: '#post-editor',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            height: 500,
+            skin: 'oxide',
+            content_css: 'default',
+            promotion: false,
+            branding: false,
+            setup: (editor) => {
+                editor.on('init', () => {
+                    if (isEditMode) loadPostData();
+                });
+            }
+        });
+
+        async function loadPostData() {
+            try {
+                const postDoc = await getDoc(doc(db, 'posts', editId));
+                if (postDoc.exists()) {
+                    const data = postDoc.data();
+
+                    // Security Check: Only author can edit
+                    // Wait for auth to initialize if needed
+                    auth.onAuthStateChanged((user) => {
+                        if (user && user.uid !== data.authorId) {
+                            alert('Unauthorized access.');
+                            window.location.href = 'index.html';
+                        }
+                    });
+
+                    document.getElementById('page-title').textContent = 'Edit Article';
+                    document.getElementById('publish-btn').innerHTML = 'Update Article <i data-lucide="save"></i>';
+                    lucide.createIcons();
+
+                    document.getElementById('post-title').value = data.title;
+                    document.getElementById('post-category').value = data.category;
+                    document.getElementById('post-image').value = data.image;
+                    document.getElementById('post-excerpt').value = data.excerpt;
+                    tinymce.get('post-editor').setContent(data.content);
+                }
+            } catch (err) {
+                console.error('Error loading post:', err);
+            }
+        }
+
+        // Handle Form Submission
+        const form = document.getElementById('post-form');
+        const publishBtn = document.getElementById('publish-btn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!auth.currentUser) {
+                alert('You must be signed in.');
+                return;
+            }
+
+            const content = tinymce.get('post-editor').getContent();
+            if (!content) {
+                alert('Article content cannot be empty.');
+                return;
+            }
+
+            try {
+                publishBtn.disabled = true;
+                publishBtn.innerHTML = isEditMode ? 'Updating... <i data-lucide="loader" class="animate-spin"></i>' : 'Publishing... <i data-lucide="loader" class="animate-spin"></i>';
+                lucide.createIcons();
+
+                const postData = {
+                    title: document.getElementById('post-title').value,
+                    category: document.getElementById('post-category').value,
+                    image: document.getElementById('post-image').value,
+                    excerpt: document.getElementById('post-excerpt').value,
+                    content: content,
+                    readTime: Math.max(1, Math.round(content.split(' ').length / 200)) + ' min read'
+                };
+
+                if (isEditMode) {
+                    await updateDoc(doc(db, 'posts', editId), {
+                        ...postData,
+                        updatedAt: serverTimestamp()
+                    });
+                    alert('Succesfully updated!');
+                } else {
+                    await addDoc(collection(db, 'posts'), {
+                        ...postData,
+                        author: auth.currentUser.displayName || 'Anonymous',
+                        authorAvatar: auth.currentUser.photoURL || 'https://i.pravatar.cc/150',
+                        authorId: auth.currentUser.uid,
+                        date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+                        dateISO: new Date().toISOString(),
+                        createdAt: serverTimestamp()
+                    });
+                    alert('Succesfully published!');
+                }
+
+                window.location.href = isEditMode ? `post.html?id=${editId}` : 'index.html';
+            } catch (err) {
+                console.error('Save failed:', err);
+                alert('Failed to save. Check console.');
+            } finally {
+                publishBtn.disabled = false;
+                publishBtn.innerHTML = isEditMode ? 'Update Article <i data-lucide="save"></i>' : 'Publish Article <i data-lucide="send"></i>';
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+
+</html>

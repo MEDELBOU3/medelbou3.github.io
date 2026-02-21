@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | The Pulse Blog</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i data-lucide="newspaper"></i></div>
+                <span class="logo-text">The <span>Pulse</span></span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+            </nav>
+            <div id="user-section"></div>
+            <button class="btn btn-primary" id="auth-btn"><i data-lucide="user"></i> Sign In</button>
+        </div>
+    </header>
+
+    <main class="container" style="padding: 80px 0; max-width: 600px; text-align: center;">
+        <h1 style="margin-bottom: 1rem;">Get in Touch</h1>
+        <p style="color: var(--color-text-muted); margin-bottom: 3rem;">Have questions, feedback, or a story to share?
+            We'd love to hear from you.</p>
+
+        <div
+            style="background: #fff; padding: 40px; border: 1px solid var(--color-border); border-radius: 20px; box-shadow: var(--shadow-xl); text-align: left;">
+            <form style="display: flex; flex-direction: column; gap: 20px;">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" placeholder="Your Name"
+                        style="padding:12px; border:1px solid var(--color-border); border-radius:10px;">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="Email Address"
+                        style="padding:12px; border:1px solid var(--color-border); border-radius:10px;">
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea placeholder="Your message..."
+                        style="padding:12px; border:1px solid var(--color-border); border-radius:10px; min-height: 150px; font-family: inherit;"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="justify-content: center; padding: 14px;">Send
+                    Message <i data-lucide="send"></i></button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-bottom">
+            <span>© 2026 The Pulse Blog. All rights reserved.</span>
+        </div>
+    </footer>
+
+    <div class="auth-modal" id="auth-modal">
+        <div class="auth-card">
+            <button class="auth-close" id="auth-close"><i data-lucide="x"></i></button>
+            <div class="auth-header">
+                <div class="auth-logo"><i data-lucide="newspaper"></i></div>
+                <h2 id="auth-title">Sign In</h2>
+            </div>
+            <form class="auth-form" id="auth-form">
+                <input type="email" id="auth-email" placeholder="Email" required
+                    style="padding:12px; border:1px solid var(--color-border); border-radius:8px; margin-bottom:12px;">
+                <input type="password" id="auth-password" placeholder="Password" required
+                    style="padding:12px; border:1px solid var(--color-border); border-radius:8px; margin-bottom:12px;">
+                <button type="submit" class="auth-btn-full" id="auth-submit-btn">Sign In</button>
+            </form>
+            <div class="auth-footer">
+                <button id="auth-toggle-btn">No account? Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/auth.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>

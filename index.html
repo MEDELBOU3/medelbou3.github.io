@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- ═══ Meta & SEO ═══════════════════════════════════════════ -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="The Pulse Blog — Insightful articles on Technology, Movies, Reviews, and News. Stay informed, stay curious.">
+    <meta name="keywords" content="tech blog, movie reviews, news, technology articles">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="The Pulse Blog">
+    <link rel="canonical" href="https://thepulseblog.com/index.html">
+
+    <!-- ═══ Open Graph ════════════════════════════════════════════ -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="The Pulse Blog — Tech, Movies, Reviews & News">
+    <meta property="og:description"
+        content="Insightful articles on Technology, Movies, Reviews, and more. Stay informed, stay curious.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1200&q=85">
+    <meta property="og:url" content="https://thepulseblog.com/">
+    <meta property="og:site_name" content="The Pulse Blog">
+
+    <title>The Pulse Blog — Tech, Movies, Reviews & News</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- Favicon (emoji fallback) -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📰</text></svg>">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SITE HEADER
+════════════════════════════════════════════════════════════════ -->
+    <header class="site-header" role="banner">
+        <div class="container header-inner">
+            <!-- Logo -->
+            <a href="index.html" class="logo" aria-label="The Pulse Blog — Home">
+                <div class="logo-icon" aria-hidden="true"><i data-lucide="newspaper"></i></div>
+                <span class="logo-text">The <span>Pulse</span></span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="nav-links" role="navigation" aria-label="Main navigation">
+                <a href="index.html" class="active">Home</a>
+                <a href="index.html?cat=Tech">Tech</a>
+                <a href="index.html?cat=Movies">Movies</a>
+                <a href="index.html?cat=Reviews">Reviews</a>
+                <a href="index.html?cat=News">News</a>
+            </nav>
+
+            <!-- Desktop Search -->
+            <div class="header-search">
+                <span class="search-icon" aria-hidden="true"><i data-lucide="search"></i></span>
+                <input type="search" placeholder="Search posts… (Enter)" aria-label="Search blog posts"
+                    id="header-search-input">
+            </div>
+
+            <!-- Auth Section -->
+            <div id="user-section"></div>
+            <button class="btn btn-primary" id="auth-btn">
+                <i data-lucide="user"></i>
+                Sign In
+            </button>
+
+            <!-- Hamburger (mobile) -->
+            <button class="hamburger" id="mobile-toggle" aria-label="Open menu" aria-expanded="false"
+                aria-controls="mobile-nav">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+        <div id="mobile-user-section"></div>
+        <button class="btn btn-primary" id="mobile-auth-btn"
+            style="width:100%; justify-content:center; margin-bottom:1rem;">
+            <i data-lucide="user"></i>
+            Sign In
+        </button>
+        <a href="index.html"><i data-lucide="home"></i> Home</a>
+        <a href="index.html?cat=Tech"><i data-lucide="cpu"></i> Tech</a>
+        <a href="index.html?cat=Movies"><i data-lucide="film"></i> Movies</a>
+        <a href="index.html?cat=Reviews"><i data-lucide="star"></i> Reviews</a>
+        <a href="index.html?cat=News"><i data-lucide="globe"></i> News</a>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     HERO SECTION
+════════════════════════════════════════════════════════════════ -->
+    <section class="hero" aria-label="Featured content">
+        <div class="container hero-inner">
+            <div class="hero-text">
+                <span class="hero-label">Insights That Matter.</span>
+                <h1 class="hero-title">
+                    Stories Worth Reading.<br>
+                    <span>Insights That Matter.</span>
+                </h1>
+                <p class="hero-desc">
+                    Deep-dive articles, honest reviews, and the latest news in Tech,
+                    Movies, and beyond — crafted for the curious mind.
+                </p>
+                <div class="hero-actions">
+                    <a href="#posts" class="btn btn-primary">Browse Articles <i data-lucide="arrow-right"></i></a>
+                </div>
+                <div class="hero-stats">
+                    <div>
+                        <div class="hero-stat-num">8+</div>
+                        <div class="hero-stat-label">Long-form Articles</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-num">4</div>
+                        <div class="hero-stat-label">Categories</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-num">5</div>
+                        <div class="hero-stat-label">Expert Authors</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero featured post card (populated by JS) -->
+            <div class="hero-image-wrap">
+                <div id="hero-featured" aria-live="polite"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     CATEGORY FILTER NAV
+════════════════════════════════════════════════════════════════ -->
+    <nav class="cat-nav" aria-label="Category filter">
+        <div class="container cat-nav-inner">
+            <button class="cat-btn active" data-cat="all" aria-pressed="true">All Posts</button>
+            <button class="cat-btn" data-cat="Tech" aria-pressed="false"><i data-lucide="cpu"></i> Tech</button>
+            <button class="cat-btn" data-cat="Movies" aria-pressed="false"><i data-lucide="film"></i> Movies</button>
+            <button class="cat-btn" data-cat="Reviews" aria-pressed="false"><i data-lucide="star"></i> Reviews</button>
+            <button class="cat-btn" data-cat="News" aria-pressed="false"><i data-lucide="globe"></i> News</button>
+        </div>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════════════════════════════ -->
+    <main class="container" id="posts" role="main">
+        <div class="main-layout">
+
+            <!-- ─── Posts Area ────────────────────────────────────────── -->
+            <section aria-label="Blog posts">
+                <div class="section-header">
+                    <h2 class="section-title">Latest Articles</h2>
+                    <span id="posts-count" style="font-size:.85rem;color:var(--color-text-muted)"></span>
+                </div>
+
+                <!-- Posts grid (filled by JS) -->
+                <div class="posts-grid" id="posts-grid" aria-live="polite" aria-label="Blog posts list">
+                    <!-- Dynamic content -->
+                </div>
+
+                <!-- Pagination (filled by JS) -->
+                <div id="pagination-wrap"></div>
+            </section>
+
+            <!-- ─── Sidebar ───────────────────────────────────────────── -->
+            <aside class="sidebar" aria-label="Sidebar">
+
+                <!-- Search Widget -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title"><i data-lucide="search"></i> Search</h3>
+                    <div class="sidebar-search">
+                        <input type="search" id="sidebar-search-input" placeholder="Search articles…"
+                            aria-label="Search posts">
+                        <button id="sidebar-search-btn" aria-label="Search">Go</button>
+                    </div>
+                </div>
+
+                <!-- Recent Posts Widget -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title"><i data-lucide="clock"></i> Recent Posts</h3>
+                    <div id="sidebar-recent" aria-live="polite">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Categories Widget -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title"><i data-lucide="folder"></i> Categories</h3>
+                    <div id="sidebar-cats" aria-live="polite">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Newsletter Widget -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title"><i data-lucide="mail"></i> Newsletter</h3>
+                    <p class="newsletter-desc"
+                        style="font-size: .85rem; margin-bottom: 1rem; color: var(--color-text-muted);">
+                        Get the best articles delivered directly to your inbox. No spam, ever.
+                    </p>
+                    <form class="newsletter-form" aria-label="Newsletter subscription"
+                        style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <input type="email" placeholder="Your email address" required aria-label="Email address"
+                            style="padding: 10px; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                        <button type="submit" class="btn btn-primary"
+                            style="justify-content: center;">Subscribe</button>
+                    </form>
+                </div>
+
+                <!-- Tags Widget -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title"><i data-lucide="tag"></i> Popular Tags</h3>
+                    <div class="tags-cloud" id="sidebar-tags" aria-live="polite">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+            </aside>
+        </div><!-- /.main-layout -->
+    </main>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════════════ -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Brand -->
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon" aria-hidden="true"><i data-lucide="newspaper" style="color:#fff;"></i>
+                        </div>
+                        <span class="logo-text">The <span>Pulse</span></span>
+                    </a>
+                    <p>
+                        Thoughtful, well-researched content on the topics that shape our world.
+                        Read more. Know more. Do more.
+                    </p>
+                </div>
+                <!-- Categories -->
+                <div class="footer-col">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="index.html?cat=Tech">Technology</a></li>
+                        <li><a href="index.html?cat=Movies">Movies</a></li>
+                        <li><a href="index.html?cat=Reviews">Reviews</a></li>
+                        <li><a href="index.html?cat=News">News</a></li>
+                    </ul>
+                </div>
+                <!-- Company -->
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© <span id="year"></span> The Pulse Blog. All rights reserved.</span>
+                <span>Made with ❤️ for knowledge seekers.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="auth-modal">
+        <div class="auth-card">
+            <button class="auth-close" id="auth-close"><i data-lucide="x"></i></button>
+            <div class="auth-header">
+                <div class="auth-logo"><i data-lucide="newspaper"></i></div>
+                <h2 id="auth-title">Sign In to Your Account</h2>
+            </div>
+            <form class="auth-form" id="auth-form">
+                <div class="form-group" id="auth-name-field" style="display: none;">
+                    <label for="auth-name">Full Name</label>
+                    <input type="text" id="auth-name" placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="auth-email">Email Address</label>
+                    <input type="email" id="auth-email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="auth-password">Password</label>
+                    <input type="password" id="auth-password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="auth-btn-full" id="auth-submit-btn">Sign In</button>
+            </form>
+            <div class="auth-footer">
+                <button id="auth-toggle-btn">Don't have an account? <span>Sign Up</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll to Top -->
+    <button class="scroll-top" id="scroll-top" aria-label="Scroll to top" title="Back to top">↑</button>
+
+    <!-- ═══ Scripts ═══════════════════════════════════════════════ -->
+    <script type="module" src="assets/js/auth.js"></script>
+    <script src="assets/js/posts.js"></script>
+    <script src="assets/js/search.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Set footer year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Initialize Lucide
+        lucide.createIcons();
+
+        // Sidebar search button
+        document.getElementById('sidebar-search-btn')?.addEventListener('click', () => {
+            const val = document.getElementById('sidebar-search-input')?.value.trim();
+            if (val) {
+                SearchState.query = val;
+                SearchState.currentPage = 1;
+                renderPostsGrid();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        // Handle ?cat= URL param for direct category links
+        const urlP = new URLSearchParams(window.location.search);
+        const catParam = urlP.get('cat');
+        if (catParam) {
+            document.addEventListener('DOMContentLoaded', () => {
+                SearchState.category = catParam;
+                document.querySelectorAll('.cat-btn').forEach(b => {
+                    b.classList.toggle('active', b.dataset.cat === catParam);
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

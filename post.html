@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Description/OG updated dynamically by JS using post data -->
+    <meta name="description" content="Read this in-depth article on The Pulse Blog.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+    <title>Article | The Pulse Blog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📰</text></svg>">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="reading-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+        aria-label="Reading progress"></div>
+
+    <!-- ═══ Site Header ══════════════════════════════════════════ -->
+    <header class="site-header" role="banner">
+        <div class="container header-inner">
+            <a href="index.html" class="logo" aria-label="The Pulse Blog — Home">
+                <div class="logo-icon" aria-hidden="true"><i data-lucide="newspaper"></i></div>
+                <span class="logo-text">The <span>Pulse</span></span>
+            </a>
+            <nav class="nav-links" role="navigation" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="index.html?cat=Tech">Tech</a>
+                <a href="index.html?cat=Movies">Movies</a>
+                <a href="index.html?cat=Reviews">Reviews</a>
+                <a href="index.html?cat=News">News</a>
+            </nav>
+            <div class="header-search">
+                <span class="search-icon" aria-hidden="true"><i data-lucide="search"></i></span>
+                <input type="search" placeholder="Search posts…" aria-label="Search blog posts"
+                    id="header-search-input">
+            </div>
+
+            <!-- Auth Section -->
+            <div id="user-section"></div>
+            <button class="btn btn-primary" id="auth-btn">
+                <i data-lucide="user"></i>
+                Sign In
+            </button>
+
+            <button class="hamburger" id="mobile-toggle" aria-label="Open menu" aria-expanded="false"
+                aria-controls="mobile-nav">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Nav -->
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+        <div id="mobile-user-section"></div>
+        <button class="btn btn-primary" id="mobile-auth-btn"
+            style="width:100%; justify-content:center; margin-bottom:1rem;">
+            <i data-lucide="user"></i>
+            Sign In
+        </button>
+        <a href="index.html"><i data-lucide="home"></i> Home</a>
+        <a href="index.html?cat=Tech"><i data-lucide="cpu"></i> Tech</a>
+        <a href="index.html?cat=Movies"><i data-lucide="film"></i> Movies</a>
+        <a href="index.html?cat=Reviews"><i data-lucide="star"></i> Reviews</a>
+        <a href="index.html?cat=News"><i data-lucide="globe"></i> News</a>
+    </nav>
+
+    <!-- ═══ Main Post Content + Sidebar ════════════════════════════ -->
+    <main role="main">
+        <div class="container">
+            <div class="main-layout" style="padding-top: 32px;">
+
+                <!-- ─── Article Column ──────────────────────────────────── -->
+                <article id="post-content" aria-live="polite">
+                    <div style="padding: 80px 0; text-align: center; color: var(--color-text-muted);">
+                        <div style="font-size: 2rem; margin-bottom: 16px;"><i data-lucide="loader"
+                                class="animate-spin"></i></div>
+                        <p>Loading article…</p>
+                    </div>
+                </article>
+
+                <!-- ─── Sidebar ─────────────────────────────────────────── -->
+                <aside class="sidebar" aria-label="Sidebar">
+                    <!-- Recent Posts -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title"><i data-lucide="clock"></i> Recent Posts</h3>
+                        <div id="post-sidebar-recent" aria-live="polite"></div>
+                    </div>
+
+                    <!-- Newsletter -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title"><i data-lucide="mail"></i> Newsletter</h3>
+                        <p class="newsletter-desc"
+                            style="font-size: .85rem; margin-bottom: 1rem; color: var(--color-text-muted);">
+                            Stay updated with our latest stories.
+                        </p>
+                        <form class="newsletter-form" aria-label="Newsletter subscription"
+                            style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            <input type="email" placeholder="Email" required
+                                style="padding: 10px; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                            <button type="submit" class="btn btn-primary"
+                                style="justify-content: center;">Subscribe</button>
+                        </form>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- ═══ Footer ═══════════════════════════════════════════════ -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon" aria-hidden="true"><i data-lucide="newspaper" style="color:#fff;"></i>
+                        </div>
+                        <span class="logo-text">The <span>Pulse</span></span>
+                    </a>
+                    <p>Thoughtful, well-researched content on the topics that shape our world.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="index.html?cat=Tech">Technology</a></li>
+                        <li><a href="index.html?cat=Movies">Movies</a></li>
+                        <li><a href="index.html?cat=Reviews">Reviews</a></li>
+                        <li><a href="index.html?cat=News">News</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© <span id="year"></span> The Pulse Blog. All rights reserved.</span>
+                <span>Made with ❤️ for knowledge seekers.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="auth-modal">
+        <div class="auth-card">
+            <button class="auth-close" id="auth-close"><i data-lucide="x"></i></button>
+            <div class="auth-header">
+                <div class="auth-logo"><i data-lucide="newspaper"></i></div>
+                <h2 id="auth-title">Sign In to Your Account</h2>
+            </div>
+            <form class="auth-form" id="auth-form">
+                <div class="form-group" id="auth-name-field" style="display: none;">
+                    <label for="auth-name">Full Name</label>
+                    <input type="text" id="auth-name" placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="auth-email">Email Address</label>
+                    <input type="email" id="auth-email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="auth-password">Password</label>
+                    <input type="password" id="auth-password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="auth-btn-full" id="auth-submit-btn">Sign In</button>
+            </form>
+            <div class="auth-footer">
+                <button id="auth-toggle-btn">Don't have an account? <span>Sign Up</span></button>
+            </div>
+        </div>
+    </div>
+
+    <button class="scroll-top" id="scroll-top" aria-label="Scroll to top" title="Back to top">↑</button>
+
+    <!-- ═══ Scripts ═══════════════════════════════════════════════ -->
+    <script type="module" src="assets/js/auth.js"></script>
+    <script src="assets/js/posts.js"></script>
+    <script src="assets/js/search.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
