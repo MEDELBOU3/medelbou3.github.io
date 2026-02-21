@@ -8,6 +8,7 @@
 const SearchState = {
     query: '',
     category: 'all',
+    tag: '', // New property for tag filtering
     currentPage: 1,
     postsPerPage: 6,
 };
@@ -49,6 +50,12 @@ function filterPosts(posts) {
             SearchState.category === 'all' ||
             post.category.toLowerCase() === SearchState.category.toLowerCase();
         if (!catMatch) return false;
+
+        // Tag filter (exact match)
+        if (SearchState.tag) {
+            const hasTag = (post.tags || []).some(t => t.toLowerCase() === SearchState.tag.toLowerCase());
+            if (!hasTag) return false;
+        }
 
         // Query filter
         if (SearchState.query) {
@@ -166,6 +173,8 @@ function initIndexFilters() {
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             SearchState.category = btn.dataset.cat;
+            SearchState.tag = ''; // Clear tag when category is clicked
+            SearchState.query = ''; // Clear query when category is clicked
             SearchState.currentPage = 1;
             if (typeof renderPostsGrid === 'function') renderPostsGrid();
         });
@@ -180,6 +189,7 @@ function initIndexFilters() {
                 // If already on index, filter inline
                 if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
                     SearchState.query = q;
+                    SearchState.tag = ''; // Clear tag when searching
                     SearchState.currentPage = 1;
                     if (typeof renderPostsGrid === 'function') renderPostsGrid();
                     headerInput.blur();
@@ -210,5 +220,12 @@ function initIndexFilters() {
         SearchState.query = qParam;
         const headerInputEl = document.querySelector('.header-search input');
         if (headerInputEl) headerInputEl.value = qParam;
+    }
+
+    // Handle ?tag= param on page load
+    const tagParam = urlParams.get('tag');
+    if (tagParam) {
+        SearchState.tag = tagParam;
+        SearchState.category = 'all'; // Usually tags bypass category restricted views
     }
 }

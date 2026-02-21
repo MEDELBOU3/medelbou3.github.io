@@ -207,9 +207,26 @@ async function renderPostsGrid() {
     const filtered = filterPosts(ALL_POSTS);
     const { posts, totalPages, currentPage } = paginatePosts(
         filtered,
-        SearchState.currentPage,
         SearchState.postsPerPage
     );
+
+    // Filter feedback
+    const feedbackWrap = $('filter-feedback');
+    if (feedbackWrap) {
+        if (SearchState.tag || SearchState.query) {
+            const label = SearchState.tag ? `Tag: <strong>${SearchState.tag}</strong>` : `Search: <strong>${SearchState.query}</strong>`;
+            feedbackWrap.innerHTML = `
+                <div class="filter-status">
+                    <span>Showing results for ${label}</span>
+                    <button onclick="clearAllFilters()" class="clear-filter-btn">Clear All <i data-lucide="x"></i></button>
+                </div>
+            `;
+            feedbackWrap.style.display = 'block';
+        } else {
+            feedbackWrap.innerHTML = '';
+            feedbackWrap.style.display = 'none';
+        }
+    }
 
     if (posts.length === 0) {
         grid.innerHTML = `
@@ -285,6 +302,7 @@ async function renderSidebar() {
 /* Helper called from sidebar category click */
 function filterByCategory(cat) {
     SearchState.category = cat;
+    SearchState.tag = ''; // Clear tag filter when changing category
     SearchState.currentPage = 1;
     // Update active state on category buttons
     $$('.cat-btn').forEach(btn => {
@@ -296,12 +314,32 @@ function filterByCategory(cat) {
 
 /* Helper called from tag chip click */
 function filterByTag(tag) {
-    SearchState.query = tag;
+    // If we're not on index.html, redirect
+    if (!window.location.pathname.endsWith('index.html') && window.location.pathname !== '/' && !window.location.pathname.endsWith('index')) {
+        window.location.href = `index.html?tag=${encodeURIComponent(tag)}`;
+        return;
+    }
+    SearchState.tag = tag;
+    SearchState.query = ''; // Clear search query when filtering by tag
     SearchState.currentPage = 1;
-    const input = document.querySelector('.header-search input');
-    if (input) input.value = tag;
+
+    // Update category UI to 'all' if tag filter is active
+    SearchState.category = 'all';
+    $$('.cat-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.cat === 'all'));
+
     renderPostsGrid();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function clearAllFilters() {
+    SearchState.query = '';
+    SearchState.tag = '';
+    SearchState.category = 'all';
+    SearchState.currentPage = 1;
+    $$('.cat-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.cat === 'all'));
+    const input = document.querySelector('.header-search input');
+    if (input) input.value = '';
+    renderPostsGrid();
 }
 
 /* ─── Hero featured post (index.html) ──────────────────────── */
@@ -411,7 +449,7 @@ async function renderSinglePost() {
     <div class="post-tags">
       <h4 class="post-tag-label">Tags:</h4>
       <div class="tags-cloud">
-        ${(post.tags || []).map(t => `<span class="tag-chip">${t}</span>`).join('')}
+        ${(post.tags || []).map(t => `<span class="tag-chip" style="cursor:pointer" onclick="filterByTag('${t}')">${t}</span>`).join('')}
       </div>
     </div>
 

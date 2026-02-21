@@ -114,6 +114,11 @@
                     </div>
 
                     <div class="input-group">
+                        <label class="editor-label">Tags (comma separated)</label>
+                        <input type="text" id="post-tags" placeholder="Technology, Quantum, Future, Innovation">
+                    </div>
+
+                    <div class="input-group">
                         <label class="editor-label">Content</label>
                         <textarea id="post-editor"></textarea>
                     </div>
@@ -186,6 +191,7 @@
                     document.getElementById('post-category').value = data.category;
                     document.getElementById('post-image').value = data.image;
                     document.getElementById('post-excerpt').value = data.excerpt;
+                    document.getElementById('post-tags').value = (data.tags || []).join(', ');
                     tinymce.get('post-editor').setContent(data.content);
                 }
             } catch (err) {
@@ -221,6 +227,7 @@
                     category: document.getElementById('post-category').value,
                     image: document.getElementById('post-image').value,
                     excerpt: document.getElementById('post-excerpt').value,
+                    tags: document.getElementById('post-tags').value.split(',').map(t => t.trim()).filter(t => t),
                     content: content,
                     readTime: Math.max(1, Math.round(content.split(' ').length / 200)) + ' min read'
                 };
