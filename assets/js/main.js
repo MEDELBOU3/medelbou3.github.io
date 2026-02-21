@@ -207,6 +207,7 @@ async function renderPostsGrid() {
     const filtered = filterPosts(ALL_POSTS);
     const { posts, totalPages, currentPage } = paginatePosts(
         filtered,
+        SearchState.currentPage,
         SearchState.postsPerPage
     );
 

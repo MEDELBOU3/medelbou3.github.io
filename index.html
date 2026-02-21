@@ -337,17 +337,6 @@
             }
         });
 
-        // Handle ?cat= URL param for direct category links
-        const urlP = new URLSearchParams(window.location.search);
-        const catParam = urlP.get('cat');
-        if (catParam) {
-            document.addEventListener('DOMContentLoaded', () => {
-                SearchState.category = catParam;
-                document.querySelectorAll('.cat-btn').forEach(b => {
-                    b.classList.toggle('active', b.dataset.cat === catParam);
-                });
-            });
-        }
     </script>
 </body>
 

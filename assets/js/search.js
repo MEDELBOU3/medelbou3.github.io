@@ -228,4 +228,13 @@ function initIndexFilters() {
         SearchState.tag = tagParam;
         SearchState.category = 'all'; // Usually tags bypass category restricted views
     }
+
+    // Handle ?cat= param on page load
+    const catParam = urlParams.get('cat');
+    if (catParam) {
+        SearchState.category = catParam;
+        document.querySelectorAll('.cat-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.cat === catParam);
+        });
+    }
 }
