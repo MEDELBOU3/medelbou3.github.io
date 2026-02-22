@@ -103,6 +103,9 @@
                         <div id="post-sidebar-recent" aria-live="polite"></div>
                     </div>
 
+                    <!-- Ad Slot -->
+                    <div id="sidebar-ad-slot"></div>
+
                     <!-- Newsletter -->
                     <div class="sidebar-widget">
                         <h3 class="widget-title"><i data-lucide="mail"></i> Newsletter</h3>
@@ -192,6 +195,23 @@
 
     <button class="scroll-top" id="scroll-top" aria-label="Scroll to top" title="Back to top">↑</button>
 
+    <!-- Newsletter Pop-up -->
+    <div class="newsletter-popup" id="newsletter-popup">
+        <button class="popup-close" id="popup-close" aria-label="Close popup"><i data-lucide="x"></i></button>
+        <div style="text-align: center;">
+            <div class="gate-icon" style="width: 50px; height: 50px; margin-bottom: 15px;"><i data-lucide="mail"></i>
+            </div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 10px;">Don't Miss an Update!</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 20px;">Join 5,000+ readers and
+                get our weekly "Pulse" newsletter with top insights.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Your email address" required
+                    style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 12px; border: 1px solid var(--color-border);">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Subscribe Now</button>
+            </form>
+        </div>
+    </div>
+
     <!-- ═══ Scripts ═══════════════════════════════════════════════ -->
     <script type="module" src="assets/js/auth.js"></script>
     <script src="assets/js/posts.js"></script>
@@ -199,7 +219,7 @@
     <script src="assets/js/main.js"></script>
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
-        lucide.createIcons();
+        if (window.lucide) lucide.createIcons();
     </script>
 </body>
 

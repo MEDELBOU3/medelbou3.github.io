@@ -131,7 +131,10 @@ function renderPostCard(post) {
       aria-label="Read: ${post.title}" onkeypress="if(event.key==='Enter')window.location='post.html?id=${post.id}'">
       <div class="post-card-image">
         <img src="${post.image}" alt="${post.title}" loading="lazy" width="800" height="450">
-        <span class="post-card-badge badge badge-${catClass}">${post.category}</span>
+        <div class="card-badges">
+          <span class="post-card-badge badge badge-${catClass}">${post.category}</span>
+          ${post.isPremium ? `<span class="post-card-badge badge-premium"><i data-lucide="lock" style="width:12px;height:12px"></i> Members Only</span>` : ''}
+        </div>
       </div>
       <div class="post-card-body">
         <div class="post-card-meta">

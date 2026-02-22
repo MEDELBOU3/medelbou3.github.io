@@ -96,34 +96,76 @@ function setActiveNav() {
 /* ─── Newsletter Form ───────────────────────────────────────── */
 function initNewsletterForms() {
     $$('.newsletter-form').forEach(form => {
-        form.addEventListener('submit', e => {
+        form.addEventListener('submit', async e => {
             e.preventDefault();
             const emailInput = form.querySelector('input[type="email"]');
             const btn = form.querySelector('button');
-            if (!emailInput?.value.trim()) return;
+            const email = emailInput?.value.trim();
+            if (!email) return;
 
-            // Simulate async submission
-            setTimeout(async () => {
-                // Track Analytics Event
-                try {
-                    const { analytics, logEvent } = await import('./auth.js');
-                    logEvent(analytics, 'newsletter_signup', {
-                        form_location: form.closest('aside') ? 'sidebar' : 'footer'
-                    });
-                } catch (err) { console.error('Analytics error:', err); }
+            try {
+                btn.disabled = true;
+                btn.innerHTML = 'Subscribing... <i data-lucide="loader" class="animate-spin"></i>';
+                if (window.lucide) lucide.createIcons();
 
+                const { db, collection, addDoc, serverTimestamp, analytics, logEvent } = await import('./auth.js');
+
+                // 1. Save to Firestore
+                await addDoc(collection(db, 'subscribers'), {
+                    email: email,
+                    source: form.closest('aside') ? 'sidebar' : 'footer',
+                    timestamp: serverTimestamp()
+                });
+
+                // 2. Track Analytics Event
+                logEvent(analytics, 'newsletter_signup', {
+                    form_location: form.closest('aside') ? 'sidebar' : 'footer'
+                });
+
+                // 3. UI Update
                 btn.textContent = '✓ Subscribed!';
                 btn.style.background = '#D1FAE5';
                 btn.style.color = '#065F46';
                 emailInput.value = '';
+
                 setTimeout(() => {
                     btn.textContent = 'Subscribe →';
                     btn.disabled = false;
                     btn.style.background = '';
                     btn.style.color = '';
-                }, 3000);
-            }, 1000);
+                    if (window.lucide) lucide.createIcons();
+                }, 4000);
+
+            } catch (err) {
+                console.error('Newsletter error:', err);
+                btn.textContent = 'Error! Try again.';
+                btn.disabled = false;
+            }
         });
+    });
+}
+
+/* ─── Newsletter Pop-up ─────────────────────────────────────── */
+function initNewsletterPopup() {
+    const popup = $('newsletter-popup');
+    if (!popup || localStorage.getItem('newsletter_dismissed')) return;
+
+    let shown = false;
+    window.addEventListener('scroll', () => {
+        if (shown) return;
+        const scrollPct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+
+        if (scrollPct > 40) { // Show after 40% scroll
+            shown = true;
+            setTimeout(() => {
+                popup.classList.add('active');
+            }, 1000);
+        }
+    }, { passive: true });
+
+    $('popup-close')?.addEventListener('click', () => {
+        popup.classList.remove('active');
+        localStorage.setItem('newsletter_dismissed', 'true');
     });
 }
 
@@ -310,6 +352,19 @@ async function renderSidebar() {
         ).join('');
     }
 
+    // Manual Ad Zone in Sidebar
+    const adZone = $('sidebar-ad-slot');
+    if (adZone) {
+        adZone.innerHTML = `
+            <div class="ad-zone ad-sidebar">
+                <div class="ad-inline">
+                    <p>SPONSORED CONTENT</p>
+                    <!-- AdSense Unit Placeholder -->
+                </div>
+            </div>
+        `;
+    }
+
     // Initialize icons
     if (window.lucide) lucide.createIcons();
 }
@@ -454,6 +509,36 @@ async function renderSinglePost() {
         `;
     }
 
+    // Gated Content Logic
+    let bodyContent = post.content;
+    const isLocked = post.isPremium && !auth.currentUser;
+
+    if (isLocked) {
+        // Show only the first 2 paragraphs as a teaser
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = post.content;
+        const paragraphs = Array.from(tempDiv.querySelectorAll('p')).slice(0, 2);
+        const teaser = paragraphs.map(p => p.outerHTML).join('');
+
+        bodyContent = `
+            <div class="article-teaser">
+                ${teaser}
+            </div>
+            <div class="content-gate">
+                <div class="gate-overlay">
+                    <div class="gate-card">
+                        <div class="gate-icon"><i data-lucide="lock"></i></div>
+                        <h3>This is a Member-Only Article</h3>
+                        <p>Join our community of knowledge seekers to unlock this deep-dive and gain unlimited access to all premium content.</p>
+                        <div class="gate-actions">
+                            <button class="btn btn-primary" onclick="document.getElementById('auth-btn').click()">Sign In / Sign Up</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
     postContent.innerHTML = `
     <!-- Admin Actions -->
     ${adminHtml}
@@ -468,7 +553,10 @@ async function renderSinglePost() {
     </nav>
 
     <header class="post-header">
-      <span class="badge badge-${catClass}">${post.category}</span>
+      <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+        <span class="badge badge-${catClass}">${post.category}</span>
+        ${post.isPremium ? `<span class="badge-premium"><i data-lucide="lock"></i> Member Only</span>` : ''}
+      </div>
       <h1 class="post-main-title">${post.title}</h1>
       <div class="post-meta-bar">
         <div class="author-meta">
@@ -489,9 +577,10 @@ async function renderSinglePost() {
     </figure>
 
     <div class="article-body">
-      ${post.content}
+      ${bodyContent}
     </div>
 
+    ${!isLocked ? `
     <div class="post-tags">
       <h4 class="post-tag-label">Tags:</h4>
       <div class="tags-cloud">
@@ -520,6 +609,7 @@ async function renderSinglePost() {
         </div>
       </div>
     </div>
+    ` : ''}
     `;
 
     // Render sidebar recent posts
@@ -532,6 +622,19 @@ async function renderSinglePost() {
     // Init share functionality
     initShareBar();
     observeNewElements();
+
+    // Manual Ad Zone in Sidebar (Single Post)
+    const adZone = $('sidebar-ad-slot');
+    if (adZone) {
+        adZone.innerHTML = `
+            <div class="ad-zone ad-sidebar">
+                <div class="ad-inline">
+                    <p>SPONSORED CONTENT</p>
+                    <!-- AdSense Unit Placeholder -->
+                </div>
+            </div>
+        `;
+    }
 
     // Delete post logic
     const deleteBtn = document.getElementById('delete-post-btn');
@@ -564,6 +667,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initFadeIn();
     setActiveNav();
     initNewsletterForms();
+    initNewsletterPopup();
     initContactForm();
     initHeaderScroll();
     initLazyImages();

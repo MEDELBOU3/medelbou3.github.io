@@ -107,6 +107,16 @@
                         </div>
                     </div>
 
+                    <div class="input-group"
+                        style="display: flex; align-items: center; gap: 10px; background: var(--color-bg-gray); padding: 15px; border-radius: 12px; margin-bottom: 24px; border: 1px solid var(--color-border);">
+                        <input type="checkbox" id="post-premium" style="width: 20px; height: 20px; cursor: pointer;">
+                        <label for="post-premium"
+                            style="font-weight: 700; cursor: pointer; color: var(--color-heading); display: flex; align-items: center; gap: 8px;">
+                            <i data-lucide="shield-check" style="color: var(--color-primary);"></i> Member Only (Gated
+                            Content)
+                        </label>
+                    </div>
+
                     <div class="input-group">
                         <label class="editor-label">Short Excerpt</label>
                         <input type="text" id="post-excerpt" placeholder="A brief summary for the card view..."
@@ -192,6 +202,7 @@
                     document.getElementById('post-image').value = data.image;
                     document.getElementById('post-excerpt').value = data.excerpt;
                     document.getElementById('post-tags').value = (data.tags || []).join(', ');
+                    document.getElementById('post-premium').checked = !!data.isPremium;
                     tinymce.get('post-editor').setContent(data.content);
                 }
             } catch (err) {
@@ -228,6 +239,7 @@
                     image: document.getElementById('post-image').value,
                     excerpt: document.getElementById('post-excerpt').value,
                     tags: document.getElementById('post-tags').value.split(',').map(t => t.trim()).filter(t => t),
+                    isPremium: document.getElementById('post-premium').checked,
                     content: content,
                     readTime: Math.max(1, Math.round(content.split(' ').length / 200)) + ' min read'
                 };
